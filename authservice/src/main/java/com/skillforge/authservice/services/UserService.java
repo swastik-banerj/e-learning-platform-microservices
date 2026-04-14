@@ -6,15 +6,21 @@ import com.skillforge.authservice.DTO.UserResponse;
 import com.skillforge.authservice.models.User;
 import com.skillforge.authservice.models.UserRole;
 import com.skillforge.authservice.repositories.UserRepository;
+import com.skillforge.authservice.security.JwtUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Data
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtils jwtUtils;
 
     public UserResponse register(RegisterRequest registerRequest){
         if(userRepository.existsByEmail(registerRequest.getEmail())){
@@ -43,8 +49,28 @@ public class UserService {
         return user;
     }
 
+    public UserResponse validateToken(HttpServletRequest request) {
+        String jwtToken = jwtUtils.getJwtFromHeader(request);
+        if(!jwtUtils.validateJwtToken(jwtToken)){
+            throw new RuntimeException("Invalid Token");
+        }
+
+        String userId = jwtUtils.getUserIdFromToken(jwtToken);
+
+        if(userId == null){
+           throw new RuntimeException("User Id is null"); 
+        }
+
+        User user = userRepository.findById(Long.parseLong(userId))
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return convertToDto(user);
+
+    }
+
     public UserResponse convertToDto(User user) {
         UserResponse response = new UserResponse();
+        response.setUserId(user.getId());
         response.setEmail(user.getEmail());
         response.setRole(user.getRole());
         response.setCreatedAt(user.getCreatedAt());

@@ -6,13 +6,11 @@ import com.skillforge.authservice.DTO.RegisterRequest;
 import com.skillforge.authservice.models.User;
 import com.skillforge.authservice.security.JwtUtils;
 import com.skillforge.authservice.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth/public")
@@ -41,5 +39,10 @@ public class AuthController {
             e.printStackTrace();
             return ResponseEntity.status(401).build();
         }
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity<?> validate(HttpServletRequest request){
+        return ResponseEntity.ok(userService.validateToken(request));
     }
 }

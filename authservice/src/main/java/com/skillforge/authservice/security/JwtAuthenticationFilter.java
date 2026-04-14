@@ -31,6 +31,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwt = parseJwt(request);
             System.out.println("Token here: "+jwt);
 
+            if(jwt == null || jwt.isEmpty()){
+                filterChain.doFilter(request,response);
+                return;
+            }
+
             String userId = jwtUtils.getUserIdFromToken(jwt);
             Claims claims = jwtUtils.getAllClaims(jwt);
             List<String> roles = claims.get("roles", List.class);
