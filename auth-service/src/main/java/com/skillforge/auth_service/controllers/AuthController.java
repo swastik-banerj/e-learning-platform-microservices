@@ -3,6 +3,7 @@ package com.skillforge.auth_service.controllers;
 import com.skillforge.auth_service.DTO.LoginRequest;
 import com.skillforge.auth_service.DTO.LoginResponse;
 import com.skillforge.auth_service.DTO.RegisterRequest;
+import com.skillforge.auth_service.DTO.UserResponse;
 import com.skillforge.auth_service.models.User;
 import com.skillforge.auth_service.security.JwtUtils;
 import com.skillforge.auth_service.services.UserService;
@@ -41,8 +42,8 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/{userId}/validate")
-    public ResponseEntity<Boolean> validateUser(@PathVariable String userId){
-        return ResponseEntity.ok(userService.validateUser(userId));
+    @GetMapping("/validate")
+    public ResponseEntity<UserResponse> validateUser(@RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(userService.validateUser(token));
     }
 }

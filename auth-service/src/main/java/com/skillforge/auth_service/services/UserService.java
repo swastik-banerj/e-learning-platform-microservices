@@ -28,7 +28,8 @@ public class UserService {
         User user = new User();
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setRole(UserRole.ROLE_STUDENT);
+        // for development
+        user.setRole(registerRequest.getRole());
         User savedUser = userRepository.save(user);
         return convertToDto(savedUser);
     }
@@ -46,13 +47,12 @@ public class UserService {
         return user;
     }
 
-    /* public UserResponse validateToken(HttpServletRequest request) {
-        String jwtToken = jwtUtils.getJwtFromHeader(request);
-        if(!jwtUtils.validateJwtToken(jwtToken)){
+     public UserResponse validateUser(String token) {
+        if(!jwtUtils.validateJwtToken(token)){
             throw new RuntimeException("Invalid Token");
         }
 
-        String userId = jwtUtils.getUserIdFromToken(jwtToken);
+        String userId = jwtUtils.getUserIdFromToken(token);
 
         if(userId == null){
             throw new RuntimeException("User Id is null");
@@ -63,7 +63,7 @@ public class UserService {
 
         return convertToDto(user);
 
-    }*/
+    }
 
     public UserResponse convertToDto(User user) {
         UserResponse response = new UserResponse();
@@ -75,7 +75,7 @@ public class UserService {
         return response;
     }
 
-    public Boolean validateUser(String userId) {
+    /*public Boolean validateUser(String userId) {
         return userRepository.existsById(Long.valueOf(userId));
-    }
+    }*/
 }

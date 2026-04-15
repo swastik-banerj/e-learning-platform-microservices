@@ -1,29 +1,35 @@
 package com.skillforge.courseservice.services;
 
+import com.skillforge.courseservice.dto.ValidationResponse;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 @Service
 @RequiredArgsConstructor
+@Data
 public class UserValidationService {
 
-    private final WebClient userServiceWebClient;
+    @Autowired
+    private WebClient userServiceWebClient;
 
-    public boolean validateUser(String userId){
+    public ValidationResponse validateUser(String token){
         try{
 
             return userServiceWebClient.get()
-                    .uri("/api/auth/public/{userId}/validate", userId)
+                    .uri("http://AUTH-SERVICE/api/auth/public/validate")
+                    .header("Authorization", token)
                     .retrieve()
-                    .bodyToMono(Boolean.class)
+                    .bodyToMono(ValidationResponse.class)
                     .block();
 
         } catch (WebClientResponseException e) {
             e.printStackTrace();
         }
 
-        return false;
+        return null;
     }
 }
