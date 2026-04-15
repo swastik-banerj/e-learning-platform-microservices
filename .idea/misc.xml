@@ -5,7 +5,15 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/authservice/pom.xml" />
+        <option value="$PROJECT_DIR$/courseservice/pom.xml" />
+        <option value="$PROJECT_DIR$/discovery-server/pom.xml" />
+        <option value="$PROJECT_DIR$/auth-service/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/authservice/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_25" default="true" project-jdk-name="25" project-jdk-type="JavaSDK">
