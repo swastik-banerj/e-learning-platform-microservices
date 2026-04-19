@@ -1,0 +1,27 @@
+package com.skillforge.enrollmentservice.services;
+
+import com.skillforge.enrollmentservice.dto.ResponseCourse;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+@Service
+@RequiredArgsConstructor
+@Data
+public class CourseValidationService {
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
+
+    public ResponseCourse getCourse(String courseId){
+
+        return webClientBuilder.build()
+                .get()
+                .uri("http://COURSE-SERVICE/"+ courseId+"/getcourse")
+                .retrieve()
+                .bodyToMono(ResponseCourse.class)
+                .block();
+    }
+}
