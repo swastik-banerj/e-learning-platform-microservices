@@ -17,11 +17,14 @@ public class CourseValidationService {
 
     public ResponseCourse getCourse(String courseId){
 
-        return webClientBuilder.build()
+        ResponseCourse response = webClientBuilder.build()
                 .get()
-                .uri("http://COURSE-SERVICE/"+ courseId+"/getcourse")
+                .uri("http://COURSESERVICE/api/course/instructor/"+ courseId+"/getcourse")
                 .retrieve()
                 .bodyToMono(ResponseCourse.class)
                 .block();
+
+        //System.out.println("RAW RESPONSE: " + response);
+        return response;
     }
 }

@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Data
@@ -18,7 +21,7 @@ public class EnrollmentService {
     private final UserValidationService userValidationService;
     private final CourseValidationService courseValidationService;
 
-    public ResponseEntity<Enrollment> enrollUser(String courseId, String token) {
+    public ResponseEntity<?> enrollUser(String courseId, String token) {
         // validate user
         ValidationResponse user = userValidationService.validateUser(token);
 
@@ -38,7 +41,7 @@ public class EnrollmentService {
         boolean exists = enrollmentRepository.existsByUserIdAndCourseId(Long.valueOf(user.getUserId()), Long.valueOf(courseId));
 
         if(exists){
-            throw new RuntimeException("Already enrolled");
+            return ResponseEntity.ok("Already enrolled");
         }
 
         Enrollment enrollment = new Enrollment();
@@ -48,5 +51,30 @@ public class EnrollmentService {
         enrollmentRepository.save(enrollment);
 
         return ResponseEntity.ok(enrollment);
+    }
+
+    public ResponseEntity<?> getUserCourses(String token) {
+        ValidationResponse user = userValidationService.validateUser(token);
+
+        if(!user.getRole().equals("ROLE_STUDENT")){
+            throw new RuntimeException("Unauthorized");
+        }
+
+        List<Enrollment> enrollments = enrollmentRepository.findByUserId(Long.valueOf(user.getUserId()));
+        List<ResponseCourse> courses = new ArrayList<>();
+        for (Enrollment enrollment : enrollments){
+            ResponseCourse course = courseValidationService.getCourse(String.valueOf(enrollment.getCourseId()));
+            if(course==null){
+                throw new RuntimeException("Course not found");
+            }
+            courses.add(course);
+        }
+
+        return ResponseEntity.ok(courses);
+    }
+
+    public Boolean checkUserAndCourse(String token, Long courseId) {
+         ValidationResponse user = userValidationService.validateUser(token);
+         return enrollmentRepository.existsByUserIdAndCourseId(Long.valueOf(user.getUserId()),courseId);
     }
 }

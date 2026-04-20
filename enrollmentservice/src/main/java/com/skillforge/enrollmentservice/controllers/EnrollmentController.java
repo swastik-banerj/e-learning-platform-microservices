@@ -19,4 +19,16 @@ public class EnrollmentController {
         String token = jwtToken.substring(7);
         return ResponseEntity.ok(enrollmentService.enrollUser(courseId,token));
     }
+
+    @GetMapping("/my-courses")
+    public ResponseEntity<?> getUserCourses(@RequestHeader("Authorization") String jwtToken){
+        String token = jwtToken.substring(7);
+        return ResponseEntity.ok(enrollmentService.getUserCourses(token));
+    }
+
+    @GetMapping("/enroll/check/{courseId}")
+    public Boolean checkUserAndCourse(@PathVariable Long courseId, @RequestHeader("Authorization") String jwtToken){
+        String token = jwtToken.substring(7);
+        return ResponseEntity.ok(enrollmentService.checkUserAndCourse(token, courseId)).hasBody();
+    }
 }

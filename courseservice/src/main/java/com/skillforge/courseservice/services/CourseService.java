@@ -49,11 +49,11 @@ public class CourseService {
 
     }
 
-    public ResponseEntity<?> getCourseById(String courseId) {
+    public ResponseCourse getCourseById(String courseId) {
         Course course = courseRepository.findById(Long.valueOf(courseId))
                 .orElseThrow(() -> new RuntimeException("Course not found"));
 
-        return ResponseEntity.ok(convertToDto(course));
+        return convertToDto(course);
     }
 
     public ResponseEntity<?> updateCourse(Long courseId, String jwtToken, RequestCourse requestCourse) {
