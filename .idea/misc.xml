@@ -10,6 +10,9 @@
         <option value="$PROJECT_DIR$/auth-service/pom.xml" />
         <option value="$PROJECT_DIR$/enrollmentservice/pom.xml" />
         <option value="$PROJECT_DIR$/api_gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/enrollment-service/pom.xml" />
+        <option value="$PROJECT_DIR$/course-service/pom.xml" />
+        <option value="$PROJECT_DIR$/api-gateway/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

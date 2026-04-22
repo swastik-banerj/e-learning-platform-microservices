@@ -19,7 +19,7 @@ public class CourseValidationService {
 
         ResponseCourse response = webClientBuilder.build()
                 .get()
-                .uri("http://COURSESERVICE/api/course/instructor/"+ courseId+"/getcourse")
+                .uri("http://COURSE-SERVICE/api/course/"+ courseId+"/getcourse")
                 .retrieve()
                 .bodyToMono(ResponseCourse.class)
                 .block();

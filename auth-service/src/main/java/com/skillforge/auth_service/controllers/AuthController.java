@@ -7,14 +7,13 @@ import com.skillforge.auth_service.DTO.UserResponse;
 import com.skillforge.auth_service.models.User;
 import com.skillforge.auth_service.security.JwtUtils;
 import com.skillforge.auth_service.services.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth/public")
+@RequestMapping("/api/auth")
 @AllArgsConstructor
 public class AuthController {
 
@@ -43,7 +42,8 @@ public class AuthController {
     }
 
     @GetMapping("/validate")
-    public ResponseEntity<UserResponse> validateUser(@RequestHeader("Authorization") String token){
+    public ResponseEntity<UserResponse> validateUser(@RequestHeader("Authorization") String jwToken){
+        String token = jwToken.substring(7);
         return ResponseEntity.ok(userService.validateUser(token));
     }
 }

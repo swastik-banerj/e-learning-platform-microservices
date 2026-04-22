@@ -28,6 +28,7 @@ public class EnrollmentController {
 
     @GetMapping("/check/{courseId}")
     public ResponseEntity<?> checkUserAndCourse(@PathVariable Long courseId, @RequestHeader("Authorization") String jwtToken){
+        System.out.println("API HIT");
         String token = jwtToken.substring(7);
         return ResponseEntity.ok(Map.of("enrolled", enrollmentService.checkUserAndCourse(token, courseId)));
     }
