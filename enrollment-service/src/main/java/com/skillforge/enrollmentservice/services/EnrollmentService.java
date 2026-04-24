@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +55,7 @@ public class EnrollmentService {
     }
 
     public ResponseEntity<?> getUserCourses(String token) {
+
         ValidationResponse user = userValidationService.validateUser(token);
 
         if(!user.getRole().equals("ROLE_STUDENT")){
@@ -75,6 +77,9 @@ public class EnrollmentService {
 
     public Boolean checkUserAndCourse(String token, Long courseId) {
          ValidationResponse user = userValidationService.validateUser(token);
-         return enrollmentRepository.existsByUserIdAndCourseId(Long.valueOf(user.getUserId()),courseId);
+        if(!user.getRole().equals("ROLE_STUDENT")){
+            throw new RuntimeException("Unauthorized");
+        }
+         return enrollmentRepository.existsByUserIdAndCourseId(Long.valueOf(user.getUserId()), courseId);
     }
 }

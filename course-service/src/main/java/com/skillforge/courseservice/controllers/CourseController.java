@@ -17,8 +17,8 @@ public class CourseController {
 
     @PostMapping("/create-course")
     public ResponseEntity<?> createCourse(@RequestHeader("Authorization") String jwtToken, @RequestBody RequestCourse requestCourse){
-        String token = jwtToken.substring(7);
-        return ResponseEntity.ok(courseService.createCourse(token,requestCourse));
+        //String token = jwtToken.substring(7);
+        return ResponseEntity.ok(courseService.createCourse(jwtToken,requestCourse));
     }
 
     @GetMapping("/{instructorId}/allcourses")

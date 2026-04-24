@@ -20,6 +20,7 @@ spring:
           predicates:
             - Path=/api/enrollment/**
 
+
 server:
   port: 8080
 

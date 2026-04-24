@@ -41,7 +41,7 @@ public class CourseService {
     }
 
     public ResponseEntity<?> getAllCourses(String instructorId) {
-        List<Course> courses = Collections.singletonList(courseRepository.findByInstructorId(Long.valueOf(instructorId)));
+        List<Course> courses = courseRepository.findByInstructorId(Long.valueOf(instructorId));
 
         return ResponseEntity.ok(courses.stream()
                 .map(course -> convertToDto(course))
@@ -57,9 +57,8 @@ public class CourseService {
     }
 
     public ResponseEntity<?> updateCourse(Long courseId, String jwtToken, RequestCourse requestCourse) {
-        String token = jwtToken.substring(7);
 
-        ValidationResponse user = userValidationService.validateUser(token);
+        ValidationResponse user = userValidationService.validateUser(jwtToken);
 
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
@@ -77,9 +76,8 @@ public class CourseService {
     }
 
     public ResponseEntity<?> deleteCourse(Long courseId, String jwtToken) {
-        String token = jwtToken.substring(7);
 
-        ValidationResponse user = userValidationService.validateUser(token);
+        ValidationResponse user = userValidationService.validateUser(jwtToken);
 
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"));

@@ -20,7 +20,7 @@ public class UserValidationService {
         try{
 
             return userServiceWebClient.get()
-                    .uri("http://AUTH-SERVICE/api/auth/public/validate")
+                    .uri("http://AUTH-SERVICE/api/auth/validate")
                     .header("Authorization", token)
                     .retrieve()
                     .bodyToMono(ValidationResponse.class)
